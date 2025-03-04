@@ -39,6 +39,7 @@ body {
   gap: 1em;
   align-items: center;
   height: 90px;
+  overflow: visible;
 }
 
 .nav__list {
@@ -48,10 +49,64 @@ body {
   gap: 1em;
 }
 
+.nav__item {
+  list-style: none;
+  position: relative;
+  height: 100%;
+  --clip: polygon(0 0, 100% 0, 100% 0, 0 0);
+  --transform: rotate(-90deg);
+}
+
+.nav__item:hover {
+  --clip: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  --transform: rotate(0);
+}
+
 .nav__link {
   color: #fff;
   text-decoration: none;
+  padding: 0 30px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  transition: 0.3s;
 }
+
+.nav__link:not(.nav__link--inside):hover {
+  background-color: #2455c0;
+  border: 2px solid;
+  border-radius: 6px;
+  margin: 5px 5px;
+}
+
+.nav__arrow {
+  transform: var(--transform);
+  transition: transform 0.3s;
+  display: block;
+  margin-left: 3px;
+}
+
+.nav__nesting {
+  clip-path: var(--clip);
+  list-style: none;
+  transition: clip-path 0.3s;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: max-content;
+  transform: translateY(100%);
+  background-color: #6489d3;
+}
+
+.nav__link--inside {
+  padding: 20px 20px;
+}
+
+.nav__link--inside:hover {
+  background-color: #99acd4;
+}
+
+
 
 .nav__logo {
   font-size: 1.8rem;
@@ -59,11 +114,17 @@ body {
 }
 
 .nav__menu {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  cursor: pointer;
   display: none;
 }
 
 .nav__icon {
-  width: 30px;
+  display: block;
+    width: 36px;
 }
 
 /* Hero main */
@@ -117,12 +178,77 @@ body {
 
 @media (max-width: 800px) {
   .nav__list {
-    display: none;
+    position:fixed;
+    max-width: 400px;
+    width: 100%;
+    top: 70px;
+    bottom: 0;
+    right: 0;
+    border: 2px solid;
+    background-image: linear-gradient(
+    to top,
+    #1e3c72 0%,
+    #1e3c72 1%,
+    #2a5298 100%
+  );
+    overflow-y: auto;
+    display: grid;
+    grid-auto-rows: max-content;
+    transform: translateX(100%);
+    font-weight: 700;
+  }
+
+  .nav__list--show{
+    transform: unset;
+    width: 100%;
+  }
+
+  .nav__link{
+    padding: 25px 0;
+        padding-left: 30px;
+        height: auto;
+  }
+
+  .nav__link--inside{
+    width: 90%;
+    margin-left: auto;
+    border-left: 1px solid #4d7bd1;
+  }
+
+  .nav__arrow{
+    margin-left: auto;
+    margin-right: 20px;
+  }
+
+  .nav__nesting{
+    display: grid;
+    position: unset;
+    width: 100%;
+    transform: translateY(0);
+    height: 0;
+    transition: height .3s;
+    background-color: #0049e6;
   }
 
   .nav__menu {
-    display: block;
+    display: flex;
   }
+
+  .nav__item {
+    --clip: 0;
+    overflow: visible;
+  }
+
+  .nav__item--active {
+    --transform: rotate(0);
+    --background: #517ad1;
+  }
+
+  .nav__item--show{
+    background-color: var(--background);
+  }
+
+ 
 
   .hero__main {
     grid-template-columns: 1fr;
